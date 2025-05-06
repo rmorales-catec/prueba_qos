@@ -20,10 +20,10 @@
                     <kind>SYNCHRONOUS</kind>
                 </publishMode>
                 <reliability>
-                    <kind>RELIABLE</kind>
+                    <kind>BEST_EFFORT</kind>
                 </reliability>
                 <durability>
-                    <kind>VOLATILE</kind>
+                    <kind>TRANSIENT_LOCAL</kind>
                 </durability>
             </qos>
             <topic>
@@ -75,10 +75,10 @@
             <historyMemoryPolicy>DYNAMIC</historyMemoryPolicy>
             <qos>
                 <reliability>
-                    <kind>RELIABLE</kind>
+                    <kind>BEST_EFFORT</kind>
                 </reliability>
                 <durability>
-                    <kind>VOLATILE</kind>
+                    <kind>TRANSIENT_LOCAL</kind>
                 </durability>
             </qos>
             <topic>

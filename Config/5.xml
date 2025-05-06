@@ -29,7 +29,7 @@
             <topic>
                 <historyQos>
                     <kind>KEEP_LAST</kind>
-                    <depth>10</depth>
+                    <depth>1</depth>
                 </historyQos>
             </topic>
 
@@ -84,7 +84,7 @@
             <topic>
                 <historyQos>
                     <kind>KEEP_LAST</kind>
-                    <depth>10</depth>
+                    <depth>1</depth>
                 </historyQos>
             </topic>
 

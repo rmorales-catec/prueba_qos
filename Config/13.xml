@@ -20,7 +20,7 @@
                     <kind>SYNCHRONOUS</kind>
                 </publishMode>
                 <reliability>
-                    <kind>RELIABLE</kind>
+                    <kind>BEST_EFFORT</kind>
                 </reliability>
                 <durability>
                     <kind>VOLATILE</kind>
@@ -75,7 +75,7 @@
             <historyMemoryPolicy>DYNAMIC</historyMemoryPolicy>
             <qos>
                 <reliability>
-                    <kind>RELIABLE</kind>
+                    <kind>BEST_EFFORT</kind>
                 </reliability>
                 <durability>
                     <kind>VOLATILE</kind>

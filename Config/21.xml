@@ -28,8 +28,8 @@
             </qos>
             <topic>
                 <historyQos>
-                    <kind>KEEP_LAST</kind>
-                    <depth>10</depth>
+                    <kind>KEEP_ALL</kind>
+                    <depth>1000</depth>
                 </historyQos>
             </topic>
 
@@ -83,8 +83,8 @@
             </qos>
             <topic>
                 <historyQos>
-                    <kind>KEEP_LAST</kind>
-                    <depth>10</depth>
+                    <kind>KEEP_ALL</kind>
+                    <depth>1000</depth>
                 </historyQos>
             </topic>
 

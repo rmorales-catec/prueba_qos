@@ -23,13 +23,13 @@
                     <kind>RELIABLE</kind>
                 </reliability>
                 <durability>
-                    <kind>VOLATILE</kind>
+                    <kind>TRANSIENT_LOCAL</kind>
                 </durability>
             </qos>
             <topic>
                 <historyQos>
                     <kind>KEEP_LAST</kind>
-                    <depth>10</depth>
+                    <depth>1</depth>
                 </historyQos>
             </topic>
 
@@ -78,13 +78,13 @@
                     <kind>RELIABLE</kind>
                 </reliability>
                 <durability>
-                    <kind>VOLATILE</kind>
+                    <kind>TRANSIENT_LOCAL</kind>
                 </durability>
             </qos>
             <topic>
                 <historyQos>
                     <kind>KEEP_LAST</kind>
-                    <depth>10</depth>
+                    <depth>1</depth>
                 </historyQos>
             </topic>
 

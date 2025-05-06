@@ -150,10 +150,10 @@ for PROFILE in "${QOS_PROFILES[@]}"; do
     echo "✅ Nodo image_subscriber cerrado"
 
     echo "✅ Pruebas completadas para $PROFILE.xml"
-    sleep 5
 
     # Incrementar para la siguiente iteración
     ((DOMAIN_ID++))
+    sleep 5
 done
 
 echo "\n📁 Todas las pruebas de QoS completadas. Resultados en: $LOG_DIR"

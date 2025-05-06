@@ -23,7 +23,7 @@
                     <kind>RELIABLE</kind>
                 </reliability>
                 <durability>
-                    <kind>VOLATILE</kind>
+                    <kind>TRANSIENT_LOCAL</kind>
                 </durability>
             </qos>
             <topic>
@@ -78,7 +78,7 @@
                     <kind>RELIABLE</kind>
                 </reliability>
                 <durability>
-                    <kind>VOLATILE</kind>
+                    <kind>TRANSIENT_LOCAL</kind>
                 </durability>
             </qos>
             <topic>
