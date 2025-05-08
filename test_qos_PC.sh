@@ -1,10 +1,34 @@
 #!/bin/zsh
 
+TOPIC="/image_compressed"
+
 # Lista de archivos XML de QoS a probar
 QOS_PROFILES=(
-    "$HOME/prueba_qos/Config/1.xml"
-    "$HOME/prueba_qos/Config/2.xml"
-    "$HOME/prueba_qos/Config/3.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/1.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/2.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/3.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/4.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/5.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/6.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/7.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/8.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/9.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/10.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/11.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/12.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/13.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/14.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/15.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/16.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/17.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/18.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/19.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/20.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/21.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/22.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/23.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/24.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"/25.xml"
 )
 
 DURATION=20  # segundos de medición
@@ -17,15 +41,15 @@ DOMAIN_ID=$BASE_DOMAIN_ID
 cd ~/ros2_ws
 source install/setup.zsh
 
-# Función que espera a que el topic esté disponible
-wait_for_topic_image() {
-    echo "🔎 Esperando a que el topic /image_compressed esté disponible..."
+
+wait_for_topic() {
+    echo "🔎 Esperando a que el topic '$TOPIC' esté disponible..."
 
     for i in {1..60}; do
-        HAS_IMAGE=$(ros2 topic list 2>/dev/null | grep -q "/image_compressed" && echo "1" || echo "0")
+        HAS_TOPIC=$(ros2 topic list 2>/dev/null | grep -q "$TOPIC" && echo "1" || echo "0")
 
-        if [[ "$HAS_IMAGE" == "1" ]]; then
-            echo "✅ Topic de imagen disponible"
+        if [[ "$HAS_TOPIC" == "1" ]]; then
+            echo "✅ Topic disponible: $TOPIC"
             sleep 5
             return 0
         fi
@@ -34,7 +58,7 @@ wait_for_topic_image() {
         sleep 1
     done
 
-    echo "❌ Topic /image_compressed no detectado tras 60 segundos"
+    echo "❌ Topic $TOPIC no detectado tras 60 segundos"
     return 1
 }
 
@@ -42,7 +66,6 @@ mover_pcaps() {
     echo "📦 Moviendo archivos .pcap desde /tmp a $LOG_DIR"
 
     local files=(/tmp/*.pcap)
-
     if [[ ${#files[@]} -eq 0 ]]; then
         echo "⚠️ No se encontraron archivos .pcap en /tmp"
         return
@@ -53,11 +76,10 @@ mover_pcaps() {
         sudo mv "$file" "$LOG_DIR/"
     done
 
-    # Aseguramos que el usuario tenga permisos sobre los archivos
     sudo chown $USER:$USER "$LOG_DIR"/*.pcap
-
     echo "✅ Todos los archivos .pcap fueron movidos"
 }
+
 
 for PROFILE in "${QOS_PROFILES[@]}"; do
     echo "\n🔧 Probando perfil QoS: $PROFILE"
@@ -69,32 +91,35 @@ for PROFILE in "${QOS_PROFILES[@]}"; do
     echo "➡️  ROS_DOMAIN_ID: $ROS_DOMAIN_ID"
     echo "➡️  FASTRTPS_DEFAULT_PROFILES_FILE: $FASTRTPS_DEFAULT_PROFILES_FILE"
 
-
-    # Reiniciar el daemon
     ros2 daemon stop
     sleep 2
 
-    if ! wait_for_topic_image; then
+    if ! wait_for_topic; then
         echo "⚠️ Saltando perfil $PROFILE por timeout en topics"
         continue
     fi
 
     PROFILE_NAME=$(basename "$PROFILE" .xml)
 
-    echo "🚀 Lanzando nodo de suscripción de imagen..."
-    ros2 run prueba_rmw image_subscriber_compressed &
-    SUB_PID=$!
+    # echo "🚀 Lanzando nodo de suscripción de imagen..."
+    # cd ~/ros2_ws
+    # source install/setup.zsh
+    # if [[ "$TOPIC" == "/image_compressed" ]]; then
+    #     ros2 run prueba_rmw image_publisher_compressed &
+    # elif [[ "$TOPIC" == "/chatter" ]]; then
+    #     ros2 run demo_nodes_cpp talker &
+    # elif [[ "$TOPIC" == "/image" ]]; then
+    #     ros2 run image_tools cam2image &
+    # fi
+    # SUB_PID=$!
     sleep 2
 
-
-    # Captura de paquetes
     (
         sleep 7
         echo "📡 Iniciando captura de paquetes con tcpdump..."
-        TCPDUMP_TMP="/tmp/${PROFILE}.pcap"
-        TCPDUMP_PID_FILE="/tmp/tcpdump.pid"  # Archivo para guardar el PID
+        TCPDUMP_TMP="/tmp/${PROFILE_NAME}.pcap"
+        TCPDUMP_PID_FILE="/tmp/tcpdump.pid"
 
-        # Ejecutar tcpdump en segundo plano y guardar su PID
         sudo tcpdump -i enxc84d44228958 -w "$TCPDUMP_TMP" &
         TCPDUMP_PID=$!
         echo "$TCPDUMP_PID" > "$TCPDUMP_PID_FILE"
@@ -102,11 +127,9 @@ for PROFILE in "${QOS_PROFILES[@]}"; do
         sleep 2
     ) &
 
-
     (
         sleep 13
         echo "🛑 Deteniendo captura de paquetes (auto)"
-        # Leer el PID desde el archivo
         TCPDUMP_PID_FILE="/tmp/tcpdump.pid"
         if [ -f "$TCPDUMP_PID_FILE" ]; then
             TCPDUMP_PID=$(cat "$TCPDUMP_PID_FILE")
@@ -124,34 +147,50 @@ for PROFILE in "${QOS_PROFILES[@]}"; do
     ) &
 
     # Medir frecuencia, delay, bandwidth
-    timeout ${DURATION}s ros2 topic hz /image_compressed -w 30 | tee "$LOG_DIR/${PROFILE_NAME}_image_hz.txt" &
+    timeout ${DURATION}s ros2 topic hz "$TOPIC" -w 30 | tee "$LOG_DIR/${PROFILE_NAME}_hz.txt" &
     HZ_PID=$!
 
-    timeout ${DURATION}s ros2 topic delay /image_compressed -w 30 | tee "$LOG_DIR/${PROFILE_NAME}_image_delay.txt" &
+    timeout ${DURATION}s ros2 topic delay "$TOPIC" -w 30 | tee "$LOG_DIR/${PROFILE_NAME}_delay.txt" &
     DELAY_PID=$!
 
-    timeout ${DURATION}s ros2 topic bw /image_compressed | tee "$LOG_DIR/${PROFILE_NAME}_image_bw.txt" &
+    timeout ${DURATION}s ros2 topic bw "$TOPIC" | tee "$LOG_DIR/${PROFILE_NAME}_bw.txt" &
     BW_PID=$!
 
     wait $HZ_PID
     wait $DELAY_PID
     wait $BW_PID
 
+
     echo "🛑 Deteniendo nodos..."
-    # Detenemos el subscriber de imágenes
-    pkill -f image_subscriber_compressed
-    sleep 1
 
-    # Espera hasta que el proceso se cierre completamente
-    while pgrep -f image_subscriber_compressed > /dev/null; do
-        echo "⏳ Esperando que image_subscriber termine..."
+    if [[ "$TOPIC" == "/image_compressed" ]]; then
+        pkill -f image_subscriber
         sleep 1
-    done
-    echo "✅ Nodo image_subscriber cerrado"
+        while pgrep -f image_subscriber > /dev/null; do
+            echo "⏳ Esperando que image_subscriber termine..."
+            sleep 1
+        done
+        echo "✅ Nodo image_subscriber cerrado"
+    elif [[ "$TOPIC" == "/chatter" ]]; then
+        pkill -f showimage
+        sleep 1
+        while pgrep -f showimage > /dev/null; do
+            echo "⏳ Esperando que showimage termine..."
+            sleep 1
+        done
+        echo "✅ Nodo showimage cerrado"
+    elif [[ "$TOPIC" == "/image" ]]; then
+        pkill -f cam2image
+        sleep 1
+        while pgrep -f cam2image > /dev/null; do
+            echo "⏳ Esperando que cam2image termine..."
+            sleep 1
+        done
+        echo "✅ Nodo cam2image"
+    fi
 
-    echo "✅ Pruebas completadas para $PROFILE.xml"
+    echo "✅ Pruebas completadas para $PROFILE_NAME.xml"
 
-    # Incrementar para la siguiente iteración
     ((DOMAIN_ID++))
     sleep 5
 done
@@ -160,5 +199,5 @@ echo "\n📁 Todas las pruebas de QoS completadas. Resultados en: $LOG_DIR"
 
 # Generar gráficos
 echo "📊 Generando gráficos..."
-cd $HOME/qos_logs
+cd $HOME/prueba_qos
 python3 graficos_qos.py

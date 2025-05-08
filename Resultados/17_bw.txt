@@ -1,0 +1,23 @@
+Subscribed to [/image_compressed]
+30.59 KB/s from 2 messages
+	Message size mean: 52.38 KB min: 52.34 KB max: 52.42 KB
+23.68 KB/s from 2 messages
+	Message size mean: 52.38 KB min: 52.34 KB max: 52.42 KB
+19.31 KB/s from 2 messages
+	Message size mean: 52.38 KB min: 52.34 KB max: 52.42 KB
+16.31 KB/s from 2 messages
+	Message size mean: 52.38 KB min: 52.34 KB max: 52.42 KB
+14.11 KB/s from 2 messages
+	Message size mean: 52.38 KB min: 52.34 KB max: 52.42 KB
+12.44 KB/s from 2 messages
+	Message size mean: 52.38 KB min: 52.34 KB max: 52.42 KB
+16.68 KB/s from 3 messages
+	Message size mean: 52.41 KB min: 52.34 KB max: 52.47 KB
+15.08 KB/s from 3 messages
+	Message size mean: 52.41 KB min: 52.34 KB max: 52.47 KB
+13.76 KB/s from 3 messages
+	Message size mean: 52.41 KB min: 52.34 KB max: 52.47 KB
+16.88 KB/s from 4 messages
+	Message size mean: 52.44 KB min: 52.34 KB max: 52.54 KB
+15.63 KB/s from 4 messages
+	Message size mean: 52.44 KB min: 52.34 KB max: 52.54 KB

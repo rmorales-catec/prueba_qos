@@ -1,0 +1,21 @@
+average delay: 0.010
+	min: 0.010s max: 0.010s std dev: 0.00000s window: 1
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+average delay: 0.010
+	min: 0.010s max: 0.010s std dev: 0.00038s window: 2
+no new messages
+no new messages
+average delay: 0.011
+	min: 0.010s max: 0.012s std dev: 0.00108s window: 3
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+average delay: 0.010
+	min: 0.010s max: 0.012s std dev: 0.00103s window: 4
+no new messages

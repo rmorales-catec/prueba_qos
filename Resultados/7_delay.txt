@@ -1,0 +1,14 @@
+average delay: 3.075
+	min: 3.075s max: 3.075s std dev: 0.00000s window: 1
+no new messages
+no new messages
+no new messages
+no new messages
+no new messages
+average delay: 4.609
+	min: 3.075s max: 6.144s std dev: 1.53490s window: 2
+no new messages
+no new messages
+average delay: 4.099
+	min: 3.075s max: 6.144s std dev: 1.44605s window: 3
+no new messages
