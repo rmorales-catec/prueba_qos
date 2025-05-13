@@ -13,7 +13,7 @@
         </subscriber>
 
          <!-- publisher profile for topic image_compressed -->
-        <publisher profile_name="/image_compressed">
+        <publisher profile_name="/image">
             <historyMemoryPolicy>DYNAMIC</historyMemoryPolicy>
             <qos>
                 <publishMode>
@@ -29,7 +29,7 @@
             <topic>
                 <historyQos>
                     <kind>KEEP_LAST</kind>
-                    <depth>100</depth>
+                    <depth>5</depth>
                 </historyQos>
             </topic>
 
@@ -71,7 +71,7 @@
         </publisher>
 
         <!-- subscriber profile for topic image_compressed -->
-        <subscriber profile_name="/image_compressed">
+        <subscriber profile_name="/image">
             <historyMemoryPolicy>DYNAMIC</historyMemoryPolicy>
             <qos>
                 <reliability>
@@ -84,7 +84,7 @@
             <topic>
                 <historyQos>
                     <kind>KEEP_LAST</kind>
-                    <depth>100</depth>
+                    <depth>5</depth>
                 </historyQos>
             </topic>
 

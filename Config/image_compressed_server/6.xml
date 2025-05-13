@@ -2,6 +2,37 @@
  <dds xmlns="http://www.eprosima.com">
 
     <profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
+        <participant profile_name="super_client_profile" is_default_profile="true">
+            <rtps>
+                <builtin>
+                    <discovery_config>
+                        <discoveryProtocol>SUPER_CLIENT</discoveryProtocol>
+                        <discoveryServersList>
+                            <RemoteServer prefix="44.53.00.5f.45.50.52.4f.53.49.4d.41">
+                                <metatrafficUnicastLocatorList>
+                                    <locator>
+                                        <udpv4>
+                                            <address>10.1.0.191</address>
+                                            <port>11811</port>
+                                        </udpv4>
+                                    </locator>
+                                </metatrafficUnicastLocatorList>
+                            </RemoteServer>
+                            <RemoteServer prefix="44.53.01.5f.45.50.52.4f.53.49.4d.41">
+                                <metatrafficUnicastLocatorList>
+                                    <locator>
+                                        <udpv4>
+                                            <address>10.1.0.191</address>
+                                            <port>11888</port>
+                                        </udpv4>
+                                    </locator>
+                                </metatrafficUnicastLocatorList>
+                            </RemoteServer>
+                        </discoveryServersList>
+                    </discovery_config>
+                </builtin>
+            </rtps>
+        </participant>
         <!-- default publisher profile -->
         <publisher profile_name="image_publisher_qos" is_default_profile="true">
             <historyMemoryPolicy>DYNAMIC</historyMemoryPolicy>
@@ -29,7 +60,7 @@
             <topic>
                 <historyQos>
                     <kind>KEEP_LAST</kind>
-                    <depth>100</depth>
+                    <depth>1000</depth>
                 </historyQos>
             </topic>
 
@@ -84,7 +115,7 @@
             <topic>
                 <historyQos>
                     <kind>KEEP_LAST</kind>
-                    <depth>100</depth>
+                    <depth>1000</depth>
                 </historyQos>
             </topic>
 

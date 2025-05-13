@@ -13,7 +13,7 @@
         </subscriber>
 
          <!-- publisher profile for topic image_compressed -->
-        <publisher profile_name="/image_compressed">
+        <publisher profile_name="/image">
             <historyMemoryPolicy>DYNAMIC</historyMemoryPolicy>
             <qos>
                 <publishMode>
@@ -23,17 +23,17 @@
                     <kind>RELIABLE</kind>
                 </reliability>
                 <durability>
-                    <kind>TRANSIENT_LOCAL</kind>
+                    <kind>VOLATILE</kind>
                 </durability>
             </qos>
             <topic>
                 <historyQos>
                     <kind>KEEP_LAST</kind>
-                    <depth>100</depth>
+                    <depth>1000</depth>
                 </historyQos>
             </topic>
 
-            <!-- <unicastLocatorList>
+            <unicastLocatorList>
                 <locator>
                     <udpv4>
                         <address>10.1.0.191</address>
@@ -49,7 +49,7 @@
                         <address>127.0.0.1</address>
                     </udpv4>
                 </locator>
-            </unicastLocatorList> -->
+            </unicastLocatorList>
 
             <!-- <multicastLocatorList>
                 <locator>
@@ -71,20 +71,20 @@
         </publisher>
 
         <!-- subscriber profile for topic image_compressed -->
-        <subscriber profile_name="/image_compressed">
+        <subscriber profile_name="/image">
             <historyMemoryPolicy>DYNAMIC</historyMemoryPolicy>
             <qos>
                 <reliability>
                     <kind>RELIABLE</kind>
                 </reliability>
                 <durability>
-                    <kind>TRANSIENT_LOCAL</kind>
+                    <kind>VOLATILE</kind>
                 </durability>
             </qos>
             <topic>
                 <historyQos>
                     <kind>KEEP_LAST</kind>
-                    <depth>100</depth>
+                    <depth>1000</depth>
                 </historyQos>
             </topic>
 

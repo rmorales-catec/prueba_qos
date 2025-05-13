@@ -12,31 +12,31 @@ echo "Interfaz de Red: $INTERFACE"
 
 # Lista de archivos XML de QoS a probar
 QOS_PROFILES=(
-        "$HOME/prueba_qos/Config"$TOPIC"/1.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/2.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/3.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/4.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/5.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/6.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/7.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/8.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/9.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/10.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/11.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/12.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/13.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/14.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/15.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/16.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/17.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/18.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/19.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/20.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/21.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/22.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/23.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/24.xml"
-        "$HOME/prueba_qos/Config"$TOPIC"/25.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/1.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/2.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/3.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/4.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/5.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/6.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/7.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/8.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/9.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/10.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/11.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/12.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/13.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/14.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/15.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/16.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/17.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/18.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/19.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/20.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/21.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/22.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/23.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/24.xml"
+        "$HOME/prueba_qos/Config"$TOPIC"_server/25.xml"
 )
 
 DURATION=20  # segundos de medición
@@ -48,6 +48,15 @@ DOMAIN_ID=$BASE_DOMAIN_ID
 
 cd ~/ros2_ws
 source install/setup.zsh
+
+# Limpiamos puertos: 
+sudo fuser -k :11811/udp
+sudo fuser -k :11888/udp
+#Lanzamos servers
+fastdds discovery -i 0 -l 10.1.0.191 -p 11811 &
+SERVER1_PID=$!
+fastdds discovery -i 1 -l 10.1.0.191 -p 11888 &
+SERVER2_PID=$!
 
 wait_for_topic() {
     echo "🔎 Esperando a que el topic '$TOPIC' esté disponible..."
@@ -94,9 +103,11 @@ for PROFILE in "${QOS_PROFILES[@]}"; do
     export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
     export FASTRTPS_DEFAULT_PROFILES_FILE=$PROFILE
     export ROS_DOMAIN_ID=$DOMAIN_ID 
+    export ROS_DISCOVERY_SERVER="10.1.0.191:11811;10.1.0.191:11888"
 
     echo "➡️  ROS_DOMAIN_ID: $ROS_DOMAIN_ID"
     echo "➡️  FASTRTPS_DEFAULT_PROFILES_FILE: $FASTRTPS_DEFAULT_PROFILES_FILE"
+    echo "➡️  ROS_DISCOVERY_SERVER: $ROS_DISCOVERY_SERVER"
 
     ros2 daemon stop
     sleep 2
@@ -162,7 +173,7 @@ for PROFILE in "${QOS_PROFILES[@]}"; do
     wait $BW_PID
 
 
-        echo "🛑 Deteniendo nodos..."
+    echo "🛑 Deteniendo nodos..."
 
     pkill -f "$EXECUTABLE_SUB"
     sleep 1
@@ -181,6 +192,10 @@ done
 echo "\n📁 Todas las pruebas de QoS completadas. Resultados en: $LOG_DIR"
 
 mover_pcaps
+
+# Limpiamos puertos: 
+sudo fuser -k :11811/udp
+sudo fuser -k :11888/udp
 
 # Generar gráficos
 echo "📊 Generando gráficos..."

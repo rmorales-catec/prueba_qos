@@ -13,7 +13,7 @@
         </subscriber>
 
          <!-- publisher profile for topic image_compressed -->
-        <publisher profile_name="/image_compressed">
+        <publisher profile_name="/image">
             <historyMemoryPolicy>DYNAMIC</historyMemoryPolicy>
             <qos>
                 <publishMode>
@@ -71,7 +71,7 @@
         </publisher>
 
         <!-- subscriber profile for topic image_compressed -->
-        <subscriber profile_name="/image_compressed">
+        <subscriber profile_name="/image">
             <historyMemoryPolicy>DYNAMIC</historyMemoryPolicy>
             <qos>
                 <reliability>
