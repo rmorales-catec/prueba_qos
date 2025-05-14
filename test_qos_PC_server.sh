@@ -4,6 +4,7 @@ PACKAGE="prueba_rmw"
 EXECUTABLE_SUB="image_subscriber_compressed"
 TOPIC="/image_compressed"
 INTERFACE="enxc84d44228958"
+IP_SERVER="10.1.0.191"
 
 echo "Paquete: $PACKAGE"
 echo "Ejecutable: $EXECUTABLE_SUB"
@@ -53,9 +54,9 @@ source install/setup.zsh
 sudo fuser -k :11811/udp
 sudo fuser -k :11888/udp
 #Lanzamos servers
-fastdds discovery -i 0 -l 10.1.0.191 -p 11811 &
+fastdds discovery -i 0 -l "$IP_SERVER" -p 11811 &
 SERVER1_PID=$!
-fastdds discovery -i 1 -l 10.1.0.191 -p 11888 &
+fastdds discovery -i 1 -l "$IP_SERVER" -p 11888 &
 SERVER2_PID=$!
 
 wait_for_topic() {
